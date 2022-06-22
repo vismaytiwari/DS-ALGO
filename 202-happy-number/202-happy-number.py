@@ -1,8 +1,15 @@
 class Solution:
-    def isHappy(self, n):
+    def find_sum(self, num):
+        s = 0
+        for i in str(num):
+            s += pow(int(i), 2)
+        return s
+    
+    def isHappy(self, n: int) -> bool:
         seen = set()
-        while n not in seen:
+        while n != 1:
+            n = self.find_sum(n)
+            if n in seen:
+                return False
             seen.add(n)
-            n = sum([int(x) **2 for x in str(n)])
         return n == 1
-        
