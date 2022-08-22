@@ -1,13 +1,24 @@
 class Solution:
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
-        """ O(k*E)T O(V)S bellman-ford algo """
-        cost = collections.defaultdict(lambda: math.inf)
-        cost[src] = 0
-        for _ in range(k + 1):
-            cost_ = cost.copy()
-            for a, b, c in flights:
-                if cost_[b] > cost[a] + c:
-                    cost_[b] = cost[a] + c
-            cost = cost_
-
-        return cost[dst] if cost[dst] != math.inf else -1
+        graph = defaultdict(list)
+        for i, j, l in flights:
+            graph[i].append([j, l])
+            
+        minCost = [float('inf')] * n
+        q = deque([(src, 0)])
+      
+    
+        stop = -1
+        
+        while q and stop < k:
+            stop += 1
+            level = len(q)
+            for _ in range(level):
+                node, cost = q.popleft()
+                for nxtNode, nxtCost in graph[node]:
+                    if nxtCost + cost < minCost[nxtNode]:
+                        minCost[nxtNode] = cost + nxtCost
+                        q.append((nxtNode, nxtCost + cost))
+    
+        return -1 if minCost[dst] == float('inf') else minCost[dst]
+     
