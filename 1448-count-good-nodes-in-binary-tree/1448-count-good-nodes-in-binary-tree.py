@@ -1,16 +1,16 @@
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-        ans = 0
-        def pre(root,maax):
-            nonlocal ans
-            if not root: return 0
+        
+        self.count = 0
+        def test(node, lower):
+            if not node:
+                return
+            if node.val >= lower:
+                self.count += 1
+                lower = node.val
             
-            if root.val>=maax:
-                ans+=1
-                # print(root.val)
-            maax = max(root.val,maax)
-            pre(root.left,maax)
-            pre(root.right,maax)
-        pre(root,float('-inf'))
-        return ans
+            test(node.left, lower)
+            test(node.right, lower)
             
+        test(root, float("-inf"))
+        return self.count
